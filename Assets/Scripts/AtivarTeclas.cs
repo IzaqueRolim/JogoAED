@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class AtivarTeclas : MonoBehaviour
 {
     public GameObject tecla;
-
     public Sprite teclaE, buttonA;
-
     bool joystickConectado = false;
+    bool estaPertoDaCasa = false;
 
     void Start()
     {
@@ -20,6 +20,12 @@ public class AtivarTeclas : MonoBehaviour
     {
        VerificarObjetoAFrente();
        VerificaarJoystick();    
+       EntrarNaCasa();
+    }
+    void EntrarNaCasa(){
+        if(Input.GetKeyDown(KeyCode.E) && estaPertoDaCasa){
+            SceneManager.LoadScene("Casa1");
+        }
     }
 
     void VerificarObjetoAFrente()
@@ -36,13 +42,13 @@ public class AtivarTeclas : MonoBehaviour
                 if (joystickConectado)
                 {
                     tecla.GetComponent<Image>().sprite = buttonA;
-                    tecla.SetActive(true);
                 }
                 else
                 {
                     tecla.GetComponent<Image>().sprite = teclaE;
-                    tecla.SetActive(true);
                 }
+                tecla.SetActive(true);
+                estaPertoDaCasa = true;
             }
         }
         else { tecla.SetActive(false); }
