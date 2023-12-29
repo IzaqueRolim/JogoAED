@@ -6,11 +6,15 @@ TagManager:
   tags:
   - box
   - house
+  - houseBubbleSort
+  - houseInsertionSort
+  - houseSelectionSort
+  - houseMergeSort
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Box
   - Water
   - UI
   - 

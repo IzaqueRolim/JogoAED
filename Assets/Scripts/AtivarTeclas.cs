@@ -8,13 +8,12 @@ public class AtivarTeclas : MonoBehaviour
 {
     public GameObject tecla;
     public Sprite teclaE, buttonA;
+
     bool joystickConectado = false;
     bool estaPertoDaCasa = false;
 
-    void Start()
-    {
-        
-    }
+    string algoritmoOrdenador;
+    
 
     void Update()
     {
@@ -23,8 +22,9 @@ public class AtivarTeclas : MonoBehaviour
        EntrarNaCasa();
     }
     void EntrarNaCasa(){
-        if(Input.GetKeyDown(KeyCode.E) && estaPertoDaCasa){
-            SceneManager.LoadScene("Casa1");
+        if((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && estaPertoDaCasa){
+            SceneManager.LoadScene("Casa"+algoritmoOrdenador);
+            this.transform.position = Vector3.zero;
         }
     }
 
@@ -37,8 +37,9 @@ public class AtivarTeclas : MonoBehaviour
 
         if (hit.collider != null)
         {
-            if (hit.collider.tag == "house")
+            if (hit.collider.tag.ToLower().Contains("house"))
             {
+                algoritmoOrdenador = hit.collider.tag.Replace("house", "");
                 if (joystickConectado)
                 {
                     tecla.GetComponent<Image>().sprite = buttonA;

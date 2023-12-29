@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,8 @@ using UnityEngine;
 public class SegurarItens : MonoBehaviour
 {
     public float raioDetecao = 1.0f;
-    public LayerMask mascaraObjetos;
-    public GameObject tecla;
-    
+
+    public Transform esteira;
 
     void Update()
     {
@@ -16,34 +16,36 @@ public class SegurarItens : MonoBehaviour
 
     void DetectarObjetosNaFrente()
     {
+        Vector2 posicaoAtual = transform.position + transform.up;
+        Vector2 direcaoForward = transform.position + transform.up + transform.up;
 
-        
+        RaycastHit2D hit = Physics2D.Raycast(posicaoAtual, direcaoForward, raioDetecao);
 
-        Vector2 posicaoFrente = transform.position + transform.right;
-
-        Collider2D[] objetosDetectados = Physics2D.OverlapCircleAll(posicaoFrente, raioDetecao, mascaraObjetos);
-
-        foreach (Collider2D objeto in objetosDetectados)
+        if (hit.collider != null)
         {
-            
-            if(objeto.gameObject.tag == "box")
+            if (hit.collider.tag.ToLower().Contains("box"))
             {
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
                 {
-                    if (this.transform.childCount == 0)
+                    if (this.transform.childCount == 1)
                     {
-                        objeto.transform.SetParent(this.transform);
-                        objeto.transform.position = new Vector2(this.transform.position.x,objeto.transform.position.y);
-                        return;
+                        hit.transform.position = new Vector2(this.transform.position.x, hit.transform.position.y);
+                        hit.transform.parent = this.transform;
                     }
-                    objeto.transform.SetParent(null);
-                    
+                    else
+                    {
+                            Debug.Log( esteira.position.y- hit.transform.position.y);
+                        if(esteira.position.y - hit.transform.position.y < 1f)
+                        {
+                            hit.collider.transform.parent = null;
+                            hit.transform.position = new Vector3(transform.position.x,esteira.position.y,0);
+                        }
+                    }
                 }
-               
-
             }
-           
         }
+
+       
     }
 
     private void OnDrawGizmosSelected()
