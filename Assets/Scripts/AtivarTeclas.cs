@@ -12,7 +12,7 @@ public class AtivarTeclas : MonoBehaviour
     bool joystickConectado = false;
     bool estaPertoDaCasa = false;
 
-    string algoritmoOrdenador;
+    public string algoritmoOrdenador;
     
 
     void Update()
@@ -23,7 +23,7 @@ public class AtivarTeclas : MonoBehaviour
     }
     void EntrarNaCasa(){
         if((Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.JoystickButton0)) && estaPertoDaCasa){
-            SceneManager.LoadScene("Casa"+algoritmoOrdenador);
+            SceneManager.LoadScene(algoritmoOrdenador);
             this.transform.position = Vector3.zero;
         }
     }
@@ -58,6 +58,8 @@ public class AtivarTeclas : MonoBehaviour
     void VerificaarJoystick()
     {
         int joystickCount = Input.GetJoystickNames().Length;
+
+       // Debug.Log(Input.IsJoystickPreconfigured(""));
 
         joystickConectado = joystickCount > 0;
        

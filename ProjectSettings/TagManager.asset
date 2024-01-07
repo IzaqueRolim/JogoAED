@@ -10,6 +10,7 @@ TagManager:
   - houseInsertionSort
   - houseSelectionSort
   - houseMergeSort
+  - houseMapa
   layers:
   - Default
   - TransparentFX

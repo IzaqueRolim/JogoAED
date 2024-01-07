@@ -9,6 +9,8 @@ public class SegurarItens : MonoBehaviour
 
     public Transform esteira;
 
+    public BubbleSort bubbleSort;
+
     void Update()
     {
         DetectarObjetosNaFrente();
@@ -21,24 +23,43 @@ public class SegurarItens : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(posicaoAtual, direcaoForward, raioDetecao);
 
+
+        // Se identificar algum objeto no raycast
         if (hit.collider != null)
         {
+            // Se o objeto identificado tiver a tag "box"
             if (hit.collider.tag.ToLower().Contains("box"))
             {
+                // Se o usuario apertar Space ou A no joystick
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.JoystickButton1))
                 {
+                    // Se o transform tiver apenas um filho, ou seja, não esteja segurando a caixa
                     if (this.transform.childCount == 1)
                     {
+                        // Ajusta a posição e seta a caixa como filho
                         hit.transform.position = new Vector2(this.transform.position.x, hit.transform.position.y);
                         hit.transform.parent = this.transform;
                     }
                     else
                     {
-                            Debug.Log( esteira.position.y- hit.transform.position.y);
-                        if(esteira.position.y - hit.transform.position.y < 1f)
+                        float DistanciaEsteiraCaixa = esteira.position.y - hit.transform.position.y;
+
+                        if(DistanciaEsteiraCaixa < 1f)
                         {
                             hit.collider.transform.parent = null;
-                            hit.transform.position = new Vector3(transform.position.x,esteira.position.y,0);
+
+                            float posX = 0;
+                            // Se a quantidade de elementos criados for impar
+                            if(bubbleSort.elementos.Count % 2 != 0)
+                            {
+                                posX = Mathf.Round(transform.position.x);
+                            }
+                            else
+                            {
+                                posX = Mathf.Round(transform.position.x * 2.0f) / 2.0f;
+                            }
+
+                            hit.transform.position = new Vector3(posX,esteira.position.y,0);
                         }
                     }
                 }

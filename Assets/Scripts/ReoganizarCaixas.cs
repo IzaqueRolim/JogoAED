@@ -15,11 +15,17 @@ public class ReoganizarCaixas : MonoBehaviour
         {
             if (transform.parent.position.x < destino)
             {
-                transform.parent.Translate(new Vector3(Time.deltaTime*2, 0, 0));
+                Vector3 Destino = new Vector3(destino, transform.parent.position.y, 0);
+                transform.parent.position = Vector2.MoveTowards(transform.parent.position, Destino, Time.deltaTime);
+               
                 return;
             }
             irParaADireita=false;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        irParaADireita = false;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
