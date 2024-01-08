@@ -34,7 +34,7 @@ public class ReoganizarCaixas : MonoBehaviour
         {
             if(collision.transform.parent != null)
             {
-                Debug.Log(collision.transform.GetChild(0).GetChild(0).GetComponent<Text>().text);
+                //Debug.Log(collision.transform.GetChild(0).GetChild(0).GetComponent<Text>().text);
                 irParaADireita = true;
                 destino = transform.parent.position.x + 1;
             }

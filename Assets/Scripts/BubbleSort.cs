@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,15 +26,17 @@ public class BubbleSort : MonoBehaviour
 
     public List<int> elementos = new List<int>();
 
+    public float posicaoInicialCaixa, posicaoMaximaCaixa;
 
-    void Start()
+
+    void Awake()
     {
         //RecuperarJson();
 
         
         if (PrecisaCriarArray())
         {
-            CriarArray();
+            CriarArray(false);
         }
         else
         {
@@ -44,19 +47,17 @@ public class BubbleSort : MonoBehaviour
 
     // Esta funcao cria uma lista de tamanho aleatorio e com numeros aleatorios
     // Depois de criar, altera o tamanho da esteira(Para caber os blocos certinhos) e instancia as caixas com os numeros criados
-    void CriarArray()
+    void CriarArray(bool estaOrdenado)
     {
         //List<int> elementos = new List<int>();
         int tamanhoLista = Random.RandomRange(5, 15);
-
-        
 
         for(int i = 0;i < tamanhoLista;i++)
         {
             elementos.Add(Random.Range(1,100));
         }
 
-        GuardarJson(elementos);
+        GuardarJson(elementos, estaOrdenado);
 
         RenderizarListaNasCaixas(elementos, tamanhoLista);
     }
@@ -67,6 +68,13 @@ public class BubbleSort : MonoBehaviour
         this.transform.localScale = new Vector3(tamanhoLista + 1, 1, 1);
 
         int count = 0;
+
+
+        // Guarda a posicao da primeira caixa com o calculo(-tamanhoDaLista/2 + 0.5 se for par, e -tamanhoDaLista/2 se for impar), exemplo:
+        // TamanhoDaLista = 14 -> -14/2 + 0.5 = -7 + 0.5 = 6.5
+        // TamanhoDaLista = 13 -> -13/2 = 6.5f
+        posicaoInicialCaixa = tamanhoLista % 2 == 0 ? -(tamanhoLista) / 2 + 0.5f : -(tamanhoLista / 2);
+        posicaoMaximaCaixa = tamanhoLista % 2 == 0 ? -(tamanhoLista) / 2 + 0.5f + elementos.Count-1 : -(tamanhoLista / 2) + elementos.Count-1;
 
         // Percorre a lista "elementos" para criar os objetos
         foreach (var elemento in elementos)
@@ -83,6 +91,32 @@ public class BubbleSort : MonoBehaviour
         }
     }
 
+    void SetarListaComoOrdenada(List<int> elementos)
+    {
+        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDados", "");
+
+        // Converte a string na classe ListaDados
+        ListaDados dadosRecuperados = JsonUtility.FromJson<ListaDados>(dadosRecuperadosJSON);
+
+
+        // Percorre a lista de dado e verifica se algum é t
+        foreach (DadosParaSalvar dado in dadosRecuperados.listaDeDados)
+        {
+            // Se existir algum dado nao ordenado, ele retorna falso, ou seja, nao precisa criar o array
+            if (!dado.ordenado)
+            {
+                dado.ordenado = true;
+                
+                string dadosJSON = JsonUtility.ToJson(dadosRecuperados);
+
+                // Salvando a string JSON no PlayerPrefs
+                PlayerPrefs.SetString("MeusDados", dadosJSON);
+                
+            }
+        }
+        
+    }
+
     void BuscarElementosNoJson()
     {
         ListaDados listaDados = RecuperarJson();
@@ -97,13 +131,13 @@ public class BubbleSort : MonoBehaviour
         }
     }
 
-    void GuardarJson(List<int> elementos)
+    void GuardarJson(List<int> elementos, bool estaOrdenado)
     {
         // Cria um objeto da classe de dados para guardar os elementos do array e se o elemento está ordenado
         DadosParaSalvar dados = new DadosParaSalvar
         {
             elementos = elementos,
-            ordenado = false
+            ordenado = estaOrdenado
         };
 
         // Busca os dados na memoria e adiciona na classe ListaDados
@@ -163,5 +197,57 @@ public class BubbleSort : MonoBehaviour
 
     }
 
-    
+    public int ReordenarArray(int elementoASerBuscado)
+    {
+        int indiceElemento = elementos.IndexOf(elementoASerBuscado);
+        TrocarElementosNaLista(elementos,indiceElemento,indiceElemento-1);
+
+        // Se a lista está ordenada, exibe uma mensagem de parabens e manda essa lista pra casa de ordenação
+        if (VerificarSeListaEstaOrdenada())
+        {
+            Debug.Log("Parabens");
+            SetarListaComoOrdenada(elementos);
+        }
+        else
+        {
+            Debug.Log("Ainda0");
+        }
+
+        return elementos[indiceElemento];
+    }
+
+    void TrocarElementosNaLista<T>(List<T> lista, int indiceA, int indiceB)
+    {
+        // Verificar se os índices são válidos
+        if (indiceA < 0 || indiceA >= lista.Count || indiceB < 0 || indiceB >= lista.Count)
+        {
+            Debug.LogError("Índices inválidos.");
+            return;
+        }
+
+        // Trocar os elementos nas posições especificadas
+        T temp = lista[indiceA];
+        lista[indiceA] = lista[indiceB];
+        lista[indiceB] = temp;
+    }
+
+
+    bool VerificarSeListaEstaOrdenada()
+    {
+        if (elementos.Count <= 1)
+        {
+            return true;
+        }
+
+        // Percorre a lista e verifica se cada elemento é menor ou igual ao próximo
+        for (int i = 0; i < elementos.Count - 1; i++)
+        {
+            if (elementos[i].CompareTo(elementos[i + 1]) > 0)
+            {
+                return false; // Lista não está ordenada
+            }
+        }
+
+        return true; 
+    }
 }
