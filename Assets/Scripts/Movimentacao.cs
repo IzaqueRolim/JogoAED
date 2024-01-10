@@ -33,10 +33,6 @@ public class Movimentacao : MonoBehaviour
             velocidade = 5;
         }
 
-
-
-
-
         // Logica para rotacionar o personagem
         if(horizontal!=0 || vertical !=0)
         {

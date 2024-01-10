@@ -11,5 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BubbleSort.unity
     guid: 357fbab4ad2e8a4448715f50df1a9355
+  - enabled: 1
+    path: Assets/Scenes/InsertionSort.unity
+    guid: 62d7c78da44f4004a9c5e62dc5d04121
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

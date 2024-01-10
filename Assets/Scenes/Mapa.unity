@@ -1058,16 +1058,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 866605754}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 722764aa1a1684e48ac18a1187a87593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   raioDetecao: 1
-  mascaraObjetos:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  tecla: {fileID: 0}
+  esteira: {fileID: 0}
+  indicador: {fileID: 0}
+  bubbleSort: {fileID: 0}
+  posicaoCaixaQuePodeSerMovida: 0
 --- !u!50 &866605761
 Rigidbody2D:
   serializedVersion: 4
@@ -1110,6 +1110,7 @@ MonoBehaviour:
   tecla: {fileID: 298657643}
   teclaE: {fileID: 21300000, guid: 89e92382c694d5242a9cdab868e2788a, type: 3}
   buttonA: {fileID: 21300000, guid: 51df0e4b78b24424f890dd7b7363e2dc, type: 3}
+  algoritmoOrdenador: 
 --- !u!1 &1180298628
 GameObject:
   m_ObjectHideFlags: 0

@@ -210,7 +210,7 @@ public class BubbleSort : MonoBehaviour
         }
         else
         {
-            Debug.Log("Ainda0");
+            Debug.Log("Ainda nao ordenou");
         }
 
         return elementos[indiceElemento];
