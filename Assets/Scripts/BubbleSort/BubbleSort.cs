@@ -50,12 +50,22 @@ public class BubbleSort : MonoBehaviour
     void CriarArray(bool estaOrdenado)
     {
         //List<int> elementos = new List<int>();
-        int tamanhoLista = Random.RandomRange(5, 15);
+        int tamanhoLista = Random.Range(5, 15);
+        List<int> elementos = new List<int>();
 
-        for(int i = 0;i < tamanhoLista;i++)
+        for (int i = 0; i < tamanhoLista; i++)
         {
-            elementos.Add(Random.Range(1,100));
+            int novoElemento;
+
+            // Garantir que o novo elemento não esteja na lista
+            do
+            {
+                novoElemento = Random.Range(1, 100);
+            } while (elementos.Contains(novoElemento));
+
+            elementos.Add(novoElemento);
         }
+
 
         GuardarJson(elementos, estaOrdenado);
 

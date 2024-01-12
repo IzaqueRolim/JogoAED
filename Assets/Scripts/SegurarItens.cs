@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,11 +18,15 @@ public class SegurarItens : MonoBehaviour
     private float posicaoInicialCaixa;
     public float posicaoCaixaQuePodeSerMovida;
 
+    public float indexGeral;
+
     private void Start()
     {
         posicaoInicialCaixa = bubbleSort.posicaoInicialCaixa;
         posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
-        VerificarSePodeSerMovida(bubbleSort.elementos[0], bubbleSort.elementos[1]);
+        indexGeral = 0;
+        //VerificarSePodeSerMovida(bubbleSort.elementos[0], bubbleSort.elementos[1]);
+        Analisar(bubbleSort.elementos[0]);
     }
 
 
@@ -71,7 +76,8 @@ public class SegurarItens : MonoBehaviour
 
                             int index = bubbleSort.elementos.IndexOf(ProximoElemento);
 
-                            Debug.Log("Elementos a serem comparados"+ bubbleSort.elementos[index] + ":"+ bubbleSort.elementos[index + 1]);
+                            Debug.Log("Elementos movido" + ElementoMovido);
+                            Debug.Log("Proximo Elemento" + ProximoElemento);
 
 
                             if (index >= bubbleSort.elementos.Count - 1)
@@ -81,7 +87,6 @@ public class SegurarItens : MonoBehaviour
                             }
 
                             VerificarSePodeSerMovida(bubbleSort.elementos[index], bubbleSort.elementos[index + 1]);
-
 
                             float posX = 0;
                             // Se a quantidade de elementos criados for impar
@@ -104,6 +109,94 @@ public class SegurarItens : MonoBehaviour
        
     }
 
+    void Analisar(int elemento)
+    {
+        List<int> elementos = bubbleSort.elementos;
+        int index = elementos.IndexOf(elemento);
+        Debug.Log(index);
+        Debug.Log(elementos[index]);
+
+        int nextIndex = (index + 1) % elementos.Count;
+
+        //   Debug.Log(elementos[nextIndex]);
+
+        if (index >= elementos.Count - 1)
+        {
+            // Se o próximo índice for o último da lista
+            posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, 9, 0);
+            Analisar(elementos[0]);
+            return;
+        }
+
+        // Verificar se os elementos são iguais
+        while (elementos[index] == elementos[nextIndex])
+        {
+            // Se forem iguais, apenas passar para o próximo índice
+            index++;
+            nextIndex++;
+            posicaoCaixaQuePodeSerMovida++;
+        }
+
+
+        
+
+        if (elementos[nextIndex] < elementos[index])
+        {
+            posicaoCaixaQuePodeSerMovida++;
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, 9, 0);
+            return;
+        }
+        else
+        {
+           
+
+            if (nextIndex >= elementos.Count - 1 && elementos[nextIndex] > elementos[index])
+            {
+                posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
+                Analisar(elementos[0]);
+                return;
+            }
+            posicaoCaixaQuePodeSerMovida++;
+            Analisar(elementos[nextIndex]);
+        }
+    }
+
+
+
+    void AtualizarPosicaoDaCaixa(int elemento, int proximoElemento)
+    { 
+
+        // Recebe apenas o elemento e faz a comparacao com o proximo, para nao repetir codigos em outros lugares
+        //                 -
+        //| 44 | 52 | 54 | 2 | 73 | 39 | 74 | 39 | 74 |
+        // Se o proximo elemento for menor que o elemento
+        if(proximoElemento < elemento)
+        {
+            posicaoCaixaQuePodeSerMovida++;
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, 9, 0);
+        }
+        else
+        {
+            List<int> elementos = bubbleSort.elementos;
+            int indexProx = elementos.IndexOf(proximoElemento);
+
+            if(indexProx >= elementos.Count - 1)
+            {
+                posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
+                AtualizarPosicaoDaCaixa(elementos[0], elementos[1]);
+                return;
+            }
+            
+            posicaoCaixaQuePodeSerMovida++;
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, 9, 0);
+            int depoisDoProximoElemento = elementos[indexProx+1];
+
+            AtualizarPosicaoDaCaixa(proximoElemento, depoisDoProximoElemento);
+        }
+    }
+   
+
     void VerificarSePodeSerMovida(int elemento, int proximoElemento)
     {
         // Condição de parada
@@ -114,14 +207,16 @@ public class SegurarItens : MonoBehaviour
         }
 
         // Condição de movimento
-        if (proximoElemento < elemento)
+        if (proximoElemento <= elemento)
         {
             posicaoCaixaQuePodeSerMovida++;
-            Debug.Log("posicao" + posicaoCaixaQuePodeSerMovida);
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida,9,0);
+           // Debug.Log("posicao" + posicaoCaixaQuePodeSerMovida);
         }
         else
         {
             int index = bubbleSort.elementos.IndexOf(proximoElemento);
+            Debug.Log(index);
 
             // Condição para o último elemento
             if (index >= bubbleSort.elementos.Count - 1)
@@ -132,7 +227,7 @@ public class SegurarItens : MonoBehaviour
             }
 
             posicaoCaixaQuePodeSerMovida++;
-
+            indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, 9, 0);
             VerificarSePodeSerMovida(proximoElemento, bubbleSort.elementos[index + 1]);
         }
     }
