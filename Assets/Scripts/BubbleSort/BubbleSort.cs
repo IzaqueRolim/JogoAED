@@ -28,11 +28,16 @@ public class BubbleSort : MonoBehaviour
 
     public float posicaoInicialCaixa, posicaoMaximaCaixa;
 
+    public GameObject painelGanhou;
+
+    private void Start()
+    {
+        painelGanhou = GameObject.FindGameObjectWithTag("PainelGanhou");
+        painelGanhou.SetActive(false);
+    }
 
     void Awake()
     {
-        //RecuperarJson();
-
         
         if (PrecisaCriarArray())
         {
@@ -51,7 +56,6 @@ public class BubbleSort : MonoBehaviour
     {
         //List<int> elementos = new List<int>();
         int tamanhoLista = Random.Range(5, 15);
-        List<int> elementos = new List<int>();
 
         for (int i = 0; i < tamanhoLista; i++)
         {
@@ -70,6 +74,8 @@ public class BubbleSort : MonoBehaviour
         GuardarJson(elementos, estaOrdenado);
 
         RenderizarListaNasCaixas(elementos, tamanhoLista);
+
+      //  BuscarElementosNoJson();
     }
 
     void RenderizarListaNasCaixas(List<int> elementos,int tamanhoLista)
@@ -215,8 +221,10 @@ public class BubbleSort : MonoBehaviour
         // Se a lista está ordenada, exibe uma mensagem de parabens e manda essa lista pra casa de ordenação
         if (VerificarSeListaEstaOrdenada())
         {
-            Debug.Log("Parabens");
+          
             SetarListaComoOrdenada(elementos);
+
+            painelGanhou.SetActive(true);
         }
         else
         {
@@ -224,6 +232,13 @@ public class BubbleSort : MonoBehaviour
         }
 
         return elementos[indiceElemento];
+    }
+
+
+    public void SomarMoedas()
+    {
+        float qtdMoedas = PlayerPrefs.GetFloat("moedas");
+        PlayerPrefs.SetFloat("moedas", qtdMoedas + 100);
     }
 
     void TrocarElementosNaLista<T>(List<T> lista, int indiceA, int indiceB)
@@ -242,7 +257,7 @@ public class BubbleSort : MonoBehaviour
     }
 
 
-    bool VerificarSeListaEstaOrdenada()
+    public bool VerificarSeListaEstaOrdenada()
     {
         if (elementos.Count <= 1)
         {

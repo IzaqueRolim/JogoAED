@@ -18,17 +18,19 @@ public class Movimentacao : MonoBehaviour
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
 
+       
+
         transform.position += Vector3.right * horizontal * Time.deltaTime * velocidade;
         transform.position += Vector3.up * vertical * Time.deltaTime * velocidade;
 
 
 
         // Logica para correr
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.JoystickButton4))
         {
             velocidade = 10;
         }
-        if(Input.GetKeyUp(KeyCode.LeftShift))
+        if(Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.JoystickButton4))
         {
             velocidade = 5;
         }

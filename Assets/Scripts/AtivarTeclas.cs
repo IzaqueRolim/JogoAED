@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class AtivarTeclas : MonoBehaviour
 {
     public GameObject tecla;
-    public Sprite teclaE, buttonA;
+    public Sprite teclaE, buttonA,cadeado;
 
     bool joystickConectado = false;
     bool estaPertoDaCasa = false;
@@ -37,6 +37,7 @@ public class AtivarTeclas : MonoBehaviour
 
         if (hit.collider != null)
         {
+
             if (hit.collider.tag.ToLower().Contains("house"))
             {
                 algoritmoOrdenador = hit.collider.tag.Replace("house", "");
@@ -51,6 +52,13 @@ public class AtivarTeclas : MonoBehaviour
                 tecla.SetActive(true);
                 estaPertoDaCasa = true;
             }
+
+            if (hit.collider.name.ToLower().Contains("bloqueado"))
+            {
+                tecla.GetComponent<Image>().sprite = cadeado;
+                estaPertoDaCasa = false;
+            }
+           
         }
         else { tecla.SetActive(false); }
     }
@@ -65,11 +73,5 @@ public class AtivarTeclas : MonoBehaviour
        
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.tag == "house")
-        {
-            tecla.SetActive(true);
-        }
-    }
+   
 }

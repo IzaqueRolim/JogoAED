@@ -11,6 +11,7 @@ TagManager:
   - houseSelectionSort
   - houseMergeSort
   - houseMapa
+  - PainelGanhou
   layers:
   - Default
   - TransparentFX
