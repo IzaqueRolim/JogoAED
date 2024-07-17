@@ -30,6 +30,10 @@ public class BubbleSort : MonoBehaviour
 
     public GameObject painelGanhou;
 
+    public Transform lanterna;
+
+    public Text casos, tempo;
+
     private void Start()
     {
         painelGanhou = GameObject.FindGameObjectWithTag("PainelGanhou");
@@ -107,31 +111,44 @@ public class BubbleSort : MonoBehaviour
         }
     }
 
-    void SetarListaComoOrdenada(List<int> elementos)
+    void SetarListaComoOrdenada()
     {
-        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDados", "");
+        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDadosBubbleSort", "");
 
         // Converte a string na classe ListaDados
         ListaDados dadosRecuperados = JsonUtility.FromJson<ListaDados>(dadosRecuperadosJSON);
 
+        // Lista para armazenar os dados ordenados
+        List<DadosParaSalvar> dadosOrdenados = new List<DadosParaSalvar>();
 
-        // Percorre a lista de dado e verifica se algum é t
+        // Percorre a lista de dados e verifica se algum não está ordenado
         foreach (DadosParaSalvar dado in dadosRecuperados.listaDeDados)
         {
-            // Se existir algum dado nao ordenado, ele retorna falso, ou seja, nao precisa criar o array
+            // Se o dado não estiver ordenado, marca como ordenado e adiciona à lista de dados ordenados
             if (!dado.ordenado)
             {
                 dado.ordenado = true;
-                
-                string dadosJSON = JsonUtility.ToJson(dadosRecuperados);
+                dado.elementos = elementos;  // Certifique-se de definir 'elementos' antes desta linha
 
-                // Salvando a string JSON no PlayerPrefs
-                PlayerPrefs.SetString("MeusDados", dadosJSON);
-                
+                dadosOrdenados.Add(dado);
             }
         }
-        
+
+        // Adiciona os dados ordenados à lista original (se houver dados ordenados)
+        if (dadosOrdenados.Count > 0)
+        {
+            dadosRecuperados.listaDeDados.AddRange(dadosOrdenados);
+
+            // Converte a lista de volta para JSON
+            string dadosJSON = JsonUtility.ToJson(dadosRecuperados);
+
+            // Salvando a string JSON no PlayerPrefs "DadosOrdenados"
+            PlayerPrefs.SetString("DadosOrdenados", dadosJSON);
+            PlayerPrefs.SetString("MeusDadosBubbleSort", dadosJSON);
+            PlayerPrefs.Save();  
+        }
     }
+
 
     void BuscarElementosNoJson()
     {
@@ -164,13 +181,13 @@ public class BubbleSort : MonoBehaviour
         string dadosJSON = JsonUtility.ToJson(listaDados);
 
         // Salvando a string JSON no PlayerPrefs
-        PlayerPrefs.SetString("MeusDados", dadosJSON);
+        PlayerPrefs.SetString("MeusDadosBubbleSort", dadosJSON);
         PlayerPrefs.Save();
     }
 
     ListaDados RecuperarJson()
     {
-        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDados", "");
+        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDadosBubbleSort", "");
 
         if (dadosRecuperadosJSON != "")
         {
@@ -188,7 +205,7 @@ public class BubbleSort : MonoBehaviour
     bool PrecisaCriarArray()
     {
         // Busca na memoria os dados
-        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDados", "");
+        string dadosRecuperadosJSON = PlayerPrefs.GetString("MeusDadosBubbleSort", "");
 
         if(dadosRecuperadosJSON == "")
         {
@@ -222,8 +239,9 @@ public class BubbleSort : MonoBehaviour
         if (VerificarSeListaEstaOrdenada())
         {
           
-            SetarListaComoOrdenada(elementos);
-
+            SetarListaComoOrdenada();
+            lanterna.localScale = new Vector2(elementos.Count,lanterna.localScale.y);
+            lanterna.position = new Vector2(0, lanterna.position.y) ;
             painelGanhou.SetActive(true);
         }
         else
@@ -235,10 +253,12 @@ public class BubbleSort : MonoBehaviour
     }
 
 
+
+
     public void SomarMoedas()
     {
-        float qtdMoedas = PlayerPrefs.GetFloat("moedas");
-        PlayerPrefs.SetFloat("moedas", qtdMoedas + 100);
+        int qtdMoedas = PlayerPrefs.GetInt("moedas");
+        PlayerPrefs.SetInt("moedas", qtdMoedas + 100);
     }
 
     void TrocarElementosNaLista<T>(List<T> lista, int indiceA, int indiceB)

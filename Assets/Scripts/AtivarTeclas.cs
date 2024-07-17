@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class AtivarTeclas : MonoBehaviour
 {
     public GameObject tecla;
-    public Sprite teclaE, buttonA,cadeado;
+    public Sprite teclaE, buttonA,cadeado,comprarIcone;
 
     bool joystickConectado = false;
     bool estaPertoDaCasa = false;
+    bool podeComprar = false;
 
     public string algoritmoOrdenador;
     
@@ -55,8 +57,33 @@ public class AtivarTeclas : MonoBehaviour
 
             if (hit.collider.name.ToLower().Contains("bloqueado"))
             {
-                tecla.GetComponent<Image>().sprite = cadeado;
-                estaPertoDaCasa = false;
+                if (PlayerPrefs.GetInt("moedas") >= hit.collider.GetComponent<CasaModel>().preco)
+                {
+                    if(PlayerPrefs.GetInt(hit.collider.GetComponent<CasaModel>().nome) == 1)
+                    {
+                        tecla.GetComponent<Image>().sprite = teclaE;
+                    }
+                    else
+                    {
+                        tecla.GetComponent<Image>().sprite = comprarIcone;
+                        estaPertoDaCasa = false;
+                        if (Input.GetKeyDown(KeyCode.E))
+                        {
+                            Debug.Log(hit.collider.GetComponent<CasaModel>().nome);
+                            hit.collider.name = "porta";
+                            hit.collider.GetComponent<CasaModel>().placa.SetActive(false);
+
+                            int novoSaldo = PlayerPrefs.GetInt("moedas") - hit.collider.GetComponent<CasaModel>().preco;
+                            PlayerPrefs.SetInt("moedas", novoSaldo );
+                            PlayerPrefs.SetInt(hit.collider.GetComponent<CasaModel>().nome, 1);
+                        }
+                    }
+                }
+                else
+                {
+                    tecla.GetComponent<Image>().sprite = cadeado;
+                    estaPertoDaCasa = false;
+                }
             }
            
         }
@@ -73,5 +100,8 @@ public class AtivarTeclas : MonoBehaviour
        
     }
 
-   
+    void DesbloquearCasa()
+    {
+
+    }
 }

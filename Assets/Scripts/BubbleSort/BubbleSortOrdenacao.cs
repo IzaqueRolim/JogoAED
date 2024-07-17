@@ -13,13 +13,14 @@ public class BubbleSortOrdenacao : MonoBehaviour
 
     private float posicaoInicialCaixa;
     public float posicaoCaixaQuePodeSerMovida;
-
+    public int quantidadeDeCaixasMovidas;
     void Start()
     {
         posicaoInicialCaixa = bubbleSort.posicaoInicialCaixa;
         posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
         indicador.position = new Vector3(posicaoCaixaQuePodeSerMovida, transform.position.y, 0);
         VerificarSePodeSerMovida(bubbleSort.elementos[0], bubbleSort.elementos[1]);
+        quantidadeDeCaixasMovidas = 0;
     }
 
 

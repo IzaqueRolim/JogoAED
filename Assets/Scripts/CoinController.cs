@@ -9,13 +9,11 @@ public class CoinController : MonoBehaviour
     void Start()
     {
         text = GetComponent<Text>();
-        float qtdMoedas = PlayerPrefs.GetFloat("moedas");
-        text.text = qtdMoedas.ToString();
+       
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        int qtdMoedas = PlayerPrefs.GetInt("moedas");
+        text.text = qtdMoedas.ToString();
     }
 }

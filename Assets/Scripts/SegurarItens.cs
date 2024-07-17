@@ -20,6 +20,10 @@ public class SegurarItens : MonoBehaviour
     float indicadorPosicao;
 
     public bool IniciouLista = false;
+    public int quantidadeDeCaixasMovidas;
+    public Text quantidadeMovida,casos,tempo,DesempenhoTempo;
+
+    float contadorTempo;
 
     private void Start()
     {
@@ -27,8 +31,9 @@ public class SegurarItens : MonoBehaviour
         posicaoCaixaQuePodeSerMovida = posicaoInicialCaixa;
         indicadorPosicao = posicaoInicialCaixa;
         indicador.position = new Vector3(indicadorPosicao + 0.5f, 8, 0);
-
+        quantidadeDeCaixasMovidas = 0;
         IniciouLista = false;
+        contadorTempo = 0f;
     }
 
 
@@ -41,6 +46,12 @@ public class SegurarItens : MonoBehaviour
         }
         DetectarObjetosNaFrente();
         MoverLuz();
+        DefinirDesempenho();
+
+        if (!bubbleSort.VerificarSeListaEstaOrdenada())
+        {
+            contadorTempo += Time.deltaTime;
+        }
     }
 
 
@@ -58,6 +69,7 @@ public class SegurarItens : MonoBehaviour
             {
                 indicadorPosicao = posicaoInicialCaixa;
             }
+            quantidadeDeCaixasMovidas++;
         }
     }
 
@@ -92,8 +104,8 @@ public class SegurarItens : MonoBehaviour
                     else
                     {
                         float DistanciaEsteiraCaixa = esteira.position.y - hit.transform.position.y;
-
-                        if(DistanciaEsteiraCaixa < 1f)
+                        
+                        if (DistanciaEsteiraCaixa < 1f)
                         {
                             string name = hit.collider.name;
                             Debug.Log("Nome Antes: " + name); // Exibindo o nome antes da modificação
@@ -141,6 +153,43 @@ public class SegurarItens : MonoBehaviour
                 }                
             }
         }  
+    }
+
+
+    void DefinirDesempenho()
+    {
+        if (bubbleSort.VerificarSeListaEstaOrdenada())
+        {
+            quantidadeMovida.text = quantidadeDeCaixasMovidas.ToString();
+
+            if (quantidadeDeCaixasMovidas==bubbleSort.elementos.Count)
+            {
+                casos.text = "Melhor caso";
+            }
+            else if(quantidadeDeCaixasMovidas == Math.Pow(bubbleSort.elementos.Count, 2))
+            {
+                casos.text = "Pior caso";
+            }
+            else
+            {
+                casos.text = "Caso médio";
+            }
+
+
+            tempo.text = contadorTempo.ToString("F2");
+            if (contadorTempo < 60)
+            {
+                DesempenhoTempo.text = "Rapido";
+            }
+            else if (contadorTempo > 60 && contadorTempo < 200)
+            {
+                DesempenhoTempo.text = "Normal";
+            }
+            else
+            {
+                DesempenhoTempo.text = "Lento";
+            }
+        }
     }
 
 

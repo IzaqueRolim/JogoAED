@@ -12,6 +12,12 @@ TagManager:
   - houseMergeSort
   - houseMapa
   - PainelGanhou
+  - seta
+  - numeroASerBuscado
+  - entrega
+  - Liberado
+  - houseBuscaBinaria
+  - esteira
   layers:
   - Default
   - TransparentFX

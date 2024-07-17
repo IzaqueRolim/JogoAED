@@ -11,8 +11,20 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BubbleSort.unity
     guid: 357fbab4ad2e8a4448715f50df1a9355
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/InsertionSort.unity
-    guid: 62d7c78da44f4004a9c5e62dc5d04121
+    guid: 61d3b0b7ff21d5c46a981345b2835a34
+  - enabled: 1
+    path: Assets/Scenes/BuscaBinaria.unity
+    guid: d98970fe06226a64f9181241f45d1c19
+  - enabled: 1
+    path: Assets/Scenes/SelectionSort.unity
+    guid: 28fac9e27b62de140a1cab5310588f70
+  - enabled: 1
+    path: Assets/Scenes/TelaDeCarregamento.unity
+    guid: c29c4bc93f7419546a23b34d037104b9
+  - enabled: 1
+    path: Assets/Scenes/MenuInicial.unity
+    guid: fa4c76985a090f942bc6b513a7ccb380
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

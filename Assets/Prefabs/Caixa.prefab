@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 5211853533340995329}
   - component: {fileID: 3365560376873456812}
   - component: {fileID: 2619064650435069281}
-  - component: {fileID: 3869072223773891457}
+  - component: {fileID: 4489261882653117177}
   m_Layer: 3
   m_Name: Caixa
   m_TagString: box
@@ -213,19 +213,28 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
---- !u!114 &3869072223773891457
-MonoBehaviour:
+--- !u!95 &4489261882653117177
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5906032109462744347}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 009de6f18030cd74cab759e137e87f34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  irParaADireita: 0
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 29c7ea1e09349ac44818ce35ed37fd1d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6643160007507794058
 GameObject:
   m_ObjectHideFlags: 0
@@ -420,3 +429,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   irParaADireita: 0
+  estaDentroNaEsteira: 0
